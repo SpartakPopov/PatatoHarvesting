@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/spart/Desktop/**)",
+      "Read(//c/Users/spart/Downloads/**)",
+      "Bash(python3 -c ':*)",
+      "Bash(identify \"c:/Users/spart/Desktop/PatatoHarvesting/frontend/src/assets/tractor-right.png\")"
+    ]
+  }
+}

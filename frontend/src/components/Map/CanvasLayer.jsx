@@ -4,47 +4,53 @@
  * Renders the persistent swath trail and tractor icon onto an HTML5 Canvas
  * that sits on top of the Leaflet tile layer.
  *
- * Design notes
- * ─────────────
- * • Must be a child of <MapContainer> so useMap() can access the Leaflet instance.
- * • The canvas is created imperatively and appended to the map container element.
- * • Refs (segRef, tractorRef) keep the closure stable across renders, so we only
- *   attach/detach Leaflet event listeners once — not on every data update.
- * • redrawRef.current() is called from a second useEffect whenever props change.
+ * Tractor images
+ * ──────────────
+ * Two top-down PNGs are preloaded at module level (no flickering mid-session):
+ *   tractor-right.png  — used when heading is roughly East  (315° – 135°)
+ *   tractor-left.png   — used when heading is roughly West  (135° – 315°)
+ *
+ * A small canvas rotation equal to the heading drift (±1.5°) is applied on
+ * top of the base image so the tractor visually steers with the path.
+ *
+ * Display size: 80 × 38 px  (maintains the 721:346 source aspect ratio).
+ * Centred on the GPS coordinate so it sits squarely on the trail.
  */
 
 import { useEffect, useRef } from 'react'
 import { useMap } from 'react-leaflet'
 
-// ── Tractor icon ──────────────────────────────────────────────────────────────
+import tractorRightSrc from '../../assets/tractor-right.png'
+import tractorLeftSrc  from '../../assets/tractor-left.png'
 
-function drawTractorIcon(ctx, x, y, headingDeg) {
+// ── Preload images at module level (once per app lifetime) ────────────────────
+const IMG_RIGHT = new Image()
+const IMG_LEFT  = new Image()
+IMG_RIGHT.src = tractorRightSrc
+IMG_LEFT.src  = tractorLeftSrc
+
+// Display dimensions — keep 721:346 ≈ 2.08:1 aspect ratio
+const TRACTOR_W = 80
+const TRACTOR_H = Math.round(TRACTOR_W / (721 / 346)) // ≈ 38 px
+
+// ── Tractor draw helper ───────────────────────────────────────────────────────
+
+function drawTractor(ctx, x, y, headingDeg) {
+  // Pick image: right-facing for East (0°–180°), left-facing for West (180°–360°)
+  const goingEast = headingDeg >= 0 && headingDeg < 180
+  const img       = goingEast ? IMG_RIGHT : IMG_LEFT
+
+  // Skip if the image hasn't loaded yet (first few ms of app)
+  if (!img.complete || img.naturalWidth === 0) return
+
+  // Drift offset from the base cardinal heading (East = 90°, West = 270°)
+  const baseHeading = goingEast ? 90 : 270
+  const driftRad    = (headingDeg - baseHeading) * Math.PI / 180
+
   ctx.save()
   ctx.translate(x, y)
-  // Leaflet: 0° = North, 90° = East. Canvas rotate: 0° = right (+x axis).
-  ctx.rotate((headingDeg - 90) * Math.PI / 180)
-
-  ctx.fillStyle = '#f59e0b'                         // body
-  ctx.beginPath()
-  if (ctx.roundRect) ctx.roundRect(-13, -7, 26, 14, 3)
-  else               ctx.rect(-13, -7, 26, 14)
-  ctx.fill()
-
-  ctx.fillStyle = '#d97706'                         // cab
-  ctx.fillRect(-3, -12, 10, 8)
-
-  ctx.fillStyle = '#fef3c7'                         // headlights
-  ctx.fillRect(12, -5, 3, 3)
-  ctx.fillRect(12, 2, 3, 3)
-
-  ctx.fillStyle = 'rgba(255,255,255,0.9)'           // direction arrow
-  ctx.beginPath()
-  ctx.moveTo(18, 0)
-  ctx.lineTo(12, -4)
-  ctx.lineTo(12, 4)
-  ctx.closePath()
-  ctx.fill()
-
+  ctx.rotate(driftRad)                              // apply only the ±1.5° drift
+  ctx.drawImage(img, -TRACTOR_W / 2, -TRACTOR_H / 2, TRACTOR_W, TRACTOR_H)
   ctx.restore()
 }
 
@@ -60,7 +66,7 @@ export default function CanvasLayer({ segments, tractor }) {
   segRef.current   = segments
   tractRef.current = tractor
 
-  // One-time setup: create canvas and attach Leaflet listeners
+  // One-time setup: create canvas and attach Leaflet event listeners
   useEffect(() => {
     const container = map.getContainer()
     const canvas    = document.createElement('canvas')
@@ -73,6 +79,7 @@ export default function CanvasLayer({ segments, tractor }) {
       canvas.height = container.clientHeight
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
+      // Draw all swath segments
       for (const seg of segRef.current) {
         const pts = seg.quad.map(([lat, lon]) => map.latLngToContainerPoint([lat, lon]))
         ctx.beginPath()
@@ -83,12 +90,17 @@ export default function CanvasLayer({ segments, tractor }) {
         ctx.fill()
       }
 
+      // Draw tractor on top of the trail
       const t = tractRef.current
       if (t) {
         const p = map.latLngToContainerPoint([t.lat, t.lon])
-        drawTractorIcon(ctx, p.x, p.y, t.heading)
+        drawTractor(ctx, p.x, p.y, t.heading)
       }
     }
+
+    // Re-draw when images finish loading (in case they weren't ready on first tick)
+    IMG_RIGHT.onload = redraw
+    IMG_LEFT.onload  = redraw
 
     redrawRef.current = redraw
     map.on('move zoom viewreset resize', redraw)
