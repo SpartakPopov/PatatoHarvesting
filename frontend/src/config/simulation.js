@@ -14,9 +14,9 @@ export const SIM_CFG = {
   startLon:    25.692696,
 
   // ── Field geometry ────────────────────────────────────────────
-  rowLength:  220,         // metres along each harvest pass
+  rowLength:  140,         // metres along each harvest pass
   rowSpacing:   4,         // metres between passes (= swath width)
-  maxRows:     40,         // total passes in Field A-7
+  maxRows:     20,         // total passes in Field A-7
 
   // ── Harvester kinematics ──────────────────────────────────────
   speedMPS:    3.2,        // metres per 500 ms tick  (~23 km/h)

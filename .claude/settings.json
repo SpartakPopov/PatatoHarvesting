@@ -4,7 +4,11 @@
       "Read(//c/Users/spart/Desktop/**)",
       "Read(//c/Users/spart/Downloads/**)",
       "Bash(python3 -c ':*)",
-      "Bash(identify \"c:/Users/spart/Desktop/PatatoHarvesting/frontend/src/assets/tractor-right.png\")"
+      "Bash(identify \"c:/Users/spart/Desktop/PatatoHarvesting/frontend/src/assets/tractor-right.png\")",
+      "Bash(python mock_data_generator.py)",
+      "Bash(cp mock_model_output.json ../frontend/public/pipeline/mock_model_output.json)",
+      "Bash(python pipeline.py)",
+      "Bash(cp dashboard_stats.csv ../frontend/public/pipeline/dashboard_stats.csv)"
     ]
   }
 }

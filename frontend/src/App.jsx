@@ -69,7 +69,7 @@ export default function App() {
     if (pkt.done) stop() // eslint-disable-line react-hooks/exhaustive-deps
   }, []) // stable — uses only refs and functional setState
 
-  const { status, start, stop } = useHarvestData({
+  const { status, start, stop, skip } = useHarvestData({
     dataSource: DATA_SOURCE,
     onPacket: handlePacket,
   })
@@ -107,6 +107,7 @@ export default function App() {
         status={status}
         onStart={start}
         onStop={stop}
+        onSkip={skip}
         onReset={handleReset}
         onClose={() => setSidebarOpen(false)}
       />
