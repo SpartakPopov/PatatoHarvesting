@@ -1,0 +1,1805 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161011,
+                    51.318996
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:06:48.802423",
+                "rolling_damage_pct": 0.0,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161031,
+                    51.319027
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:06:49.802423",
+                "rolling_damage_pct": 12.5,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161035,
+                    51.319059
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:06:50.802423",
+                "rolling_damage_pct": 8.33,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161064,
+                    51.319078
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:06:51.802423",
+                "rolling_damage_pct": 13.94,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161104,
+                    51.319085
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:06:52.802423",
+                "rolling_damage_pct": 15.15,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161105,
+                    51.319082
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:06:53.802423",
+                "rolling_damage_pct": 12.63,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161149,
+                    51.319114
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:06:54.802423",
+                "rolling_damage_pct": 17.97,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161182,
+                    51.31911
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:06:55.802423",
+                "rolling_damage_pct": 18.22,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161196,
+                    51.3191
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:06:56.802423",
+                "rolling_damage_pct": 18.58,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161218,
+                    51.319098
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:06:57.802423",
+                "rolling_damage_pct": 19.58,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161238,
+                    51.319096
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:06:58.802423",
+                "rolling_damage_pct": 19.58,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161262,
+                    51.319138
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:06:59.802423",
+                "rolling_damage_pct": 18.74,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161285,
+                    51.319175
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:00.802423",
+                "rolling_damage_pct": 19.65,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161309,
+                    51.319204
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:01.802423",
+                "rolling_damage_pct": 19.58,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161354,
+                    51.319197
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:02.802423",
+                "rolling_damage_pct": 19.58,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.16138,
+                    51.319236
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:03.802423",
+                "rolling_damage_pct": 21.0,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161416,
+                    51.319272
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:04.802423",
+                "rolling_damage_pct": 20.0,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161417,
+                    51.319277
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:05.802423",
+                "rolling_damage_pct": 18.0,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161411,
+                    51.31928
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:06.802423",
+                "rolling_damage_pct": 16.58,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161419,
+                    51.319313
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:07.802423",
+                "rolling_damage_pct": 16.03,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161438,
+                    51.319315
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:08.802423",
+                "rolling_damage_pct": 17.45,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161446,
+                    51.319337
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:09.802423",
+                "rolling_damage_pct": 15.79,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161437,
+                    51.319329
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:10.802423",
+                "rolling_damage_pct": 17.74,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161459,
+                    51.31936
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:11.802423",
+                "rolling_damage_pct": 14.74,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161488,
+                    51.31937
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:12.802423",
+                "rolling_damage_pct": 12.74,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161536,
+                    51.319376
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:13.802423",
+                "rolling_damage_pct": 13.62,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161529,
+                    51.319382
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:14.802423",
+                "rolling_damage_pct": 9.62,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161521,
+                    51.319412
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:15.802423",
+                "rolling_damage_pct": 9.62,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161564,
+                    51.319438
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:16.802423",
+                "rolling_damage_pct": 8.9,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161591,
+                    51.319462
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:17.802423",
+                "rolling_damage_pct": 9.26,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161584,
+                    51.319459
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:18.802423",
+                "rolling_damage_pct": 8.83,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161575,
+                    51.319492
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:19.802423",
+                "rolling_damage_pct": 10.26,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161618,
+                    51.319517
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:20.802423",
+                "rolling_damage_pct": 11.15,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161624,
+                    51.319548
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:21.802423",
+                "rolling_damage_pct": 11.15,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161664,
+                    51.319574
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:22.802423",
+                "rolling_damage_pct": 11.92,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.1617,
+                    51.31962
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:23.802423",
+                "rolling_damage_pct": 12.47,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.16171,
+                    51.319653
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:24.802423",
+                "rolling_damage_pct": 15.55,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161704,
+                    51.319694
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:25.802423",
+                "rolling_damage_pct": 19.55,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161723,
+                    51.319723
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:26.802423",
+                "rolling_damage_pct": 20.66,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161725,
+                    51.319735
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:27.802423",
+                "rolling_damage_pct": 20.49,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161758,
+                    51.319746
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:28.802423",
+                "rolling_damage_pct": 21.64,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161759,
+                    51.319786
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:29.802423",
+                "rolling_damage_pct": 23.06,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161784,
+                    51.319818
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:30.802423",
+                "rolling_damage_pct": 20.56,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161796,
+                    51.319826
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:31.802423",
+                "rolling_damage_pct": 20.56,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161843,
+                    51.319856
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:32.802423",
+                "rolling_damage_pct": 23.55,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161867,
+                    51.319878
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:33.802423",
+                "rolling_damage_pct": 22.69,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161884,
+                    51.319921
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:34.802423",
+                "rolling_damage_pct": 20.72,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161901,
+                    51.319926
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:35.802423",
+                "rolling_damage_pct": 17.97,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161923,
+                    51.319958
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:36.802423",
+                "rolling_damage_pct": 17.69,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161948,
+                    51.319997
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:37.802423",
+                "rolling_damage_pct": 18.19,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161961,
+                    51.320021
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:38.802423",
+                "rolling_damage_pct": 19.38,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.161997,
+                    51.320027
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:39.802423",
+                "rolling_damage_pct": 17.36,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.16204,
+                    51.32003
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:40.802423",
+                "rolling_damage_pct": 16.11,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162081,
+                    51.320028
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:41.802423",
+                "rolling_damage_pct": 17.22,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162073,
+                    51.320047
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:42.802423",
+                "rolling_damage_pct": 16.33,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162081,
+                    51.320039
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:43.802423",
+                "rolling_damage_pct": 17.19,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.1621,
+                    51.320031
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:44.802423",
+                "rolling_damage_pct": 16.08,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162107,
+                    51.320027
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:45.802423",
+                "rolling_damage_pct": 16.25,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162128,
+                    51.320061
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:46.802423",
+                "rolling_damage_pct": 17.56,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162122,
+                    51.320096
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:47.802423",
+                "rolling_damage_pct": 14.56,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162118,
+                    51.320133
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:48.802423",
+                "rolling_damage_pct": 12.34,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162127,
+                    51.320146
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:49.802423",
+                "rolling_damage_pct": 14.51,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162141,
+                    51.320167
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:50.802423",
+                "rolling_damage_pct": 15.76,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162166,
+                    51.320167
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:51.802423",
+                "rolling_damage_pct": 16.65,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162184,
+                    51.3202
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:52.802423",
+                "rolling_damage_pct": 15.79,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.16223,
+                    51.320229
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:53.802423",
+                "rolling_damage_pct": 13.93,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162265,
+                    51.320243
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:54.802423",
+                "rolling_damage_pct": 21.43,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162268,
+                    51.320278
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:55.802423",
+                "rolling_damage_pct": 22.73,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162264,
+                    51.320314
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:56.802423",
+                "rolling_damage_pct": 25.03,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162257,
+                    51.32033
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:57.802423",
+                "rolling_damage_pct": 26.46,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162297,
+                    51.320361
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:58.802423",
+                "rolling_damage_pct": 28.43,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162291,
+                    51.320373
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:07:59.802423",
+                "rolling_damage_pct": 26.54,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162326,
+                    51.320402
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:00.802423",
+                "rolling_damage_pct": 25.29,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162374,
+                    51.320437
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:01.802423",
+                "rolling_damage_pct": 24.4,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162412,
+                    51.320434
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:02.802423",
+                "rolling_damage_pct": 23.23,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162446,
+                    51.320429
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:03.802423",
+                "rolling_damage_pct": 23.0,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162464,
+                    51.320453
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:04.802423",
+                "rolling_damage_pct": 19.5,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162507,
+                    51.320488
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:05.802423",
+                "rolling_damage_pct": 20.77,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162508,
+                    51.320485
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:06.802423",
+                "rolling_damage_pct": 17.76,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162531,
+                    51.320522
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:07.802423",
+                "rolling_damage_pct": 17.44,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162558,
+                    51.32056
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:08.802423",
+                "rolling_damage_pct": 14.36,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162576,
+                    51.320594
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:09.802423",
+                "rolling_damage_pct": 13.25,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162598,
+                    51.3206
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:10.802423",
+                "rolling_damage_pct": 15.25,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.1626,
+                    51.320646
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:11.802423",
+                "rolling_damage_pct": 15.25,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162621,
+                    51.320644
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:12.802423",
+                "rolling_damage_pct": 17.75,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162663,
+                    51.320635
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:13.802423",
+                "rolling_damage_pct": 18.65,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162704,
+                    51.320627
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:14.802423",
+                "rolling_damage_pct": 17.98,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162703,
+                    51.320638
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:15.802423",
+                "rolling_damage_pct": 15.1,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162728,
+                    51.320676
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:16.802423",
+                "rolling_damage_pct": 13.67,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162747,
+                    51.320723
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:17.802423",
+                "rolling_damage_pct": 12.56,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162776,
+                    51.320746
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:18.802423",
+                "rolling_damage_pct": 14.56,
+                "alert": false
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162785,
+                    51.320768
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:19.802423",
+                "rolling_damage_pct": 17.56,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.16278,
+                    51.320797
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:20.802423",
+                "rolling_damage_pct": 17.56,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.16283,
+                    51.320807
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:21.802423",
+                "rolling_damage_pct": 17.69,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162867,
+                    51.320816
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:22.802423",
+                "rolling_damage_pct": 18.0,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162909,
+                    51.32082
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:23.802423",
+                "rolling_damage_pct": 17.16,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.1629,
+                    51.32083
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:24.802423",
+                "rolling_damage_pct": 16.83,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162946,
+                    51.320846
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:25.802423",
+                "rolling_damage_pct": 16.97,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162947,
+                    51.320844
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:26.802423",
+                "rolling_damage_pct": 17.8,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.16298,
+                    51.320892
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:27.802423",
+                "rolling_damage_pct": 17.8,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.16298,
+                    51.320891
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:28.802423",
+                "rolling_damage_pct": 17.8,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.162999,
+                    51.32091
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:29.802423",
+                "rolling_damage_pct": 17.3,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.163022,
+                    51.320939
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:30.802423",
+                "rolling_damage_pct": 18.64,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.163038,
+                    51.32098
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:31.802423",
+                "rolling_damage_pct": 17.39,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.163035,
+                    51.32101
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:32.802423",
+                "rolling_damage_pct": 15.18,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.163055,
+                    51.321002
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:33.802423",
+                "rolling_damage_pct": 17.68,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.163103,
+                    51.321021
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:34.802423",
+                "rolling_damage_pct": 17.18,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.163143,
+                    51.321034
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:35.802423",
+                "rolling_damage_pct": 17.93,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.163187,
+                    51.32104
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:36.802423",
+                "rolling_damage_pct": 19.32,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.163183,
+                    51.321061
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:37.802423",
+                "rolling_damage_pct": 23.32,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.163174,
+                    51.321074
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:38.802423",
+                "rolling_damage_pct": 22.23,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.163216,
+                    51.321114
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:39.802423",
+                "rolling_damage_pct": 22.23,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.16325,
+                    51.321108
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:40.802423",
+                "rolling_damage_pct": 21.39,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.163284,
+                    51.321157
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:41.802423",
+                "rolling_damage_pct": 23.7,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.163306,
+                    51.321187
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:42.802423",
+                "rolling_damage_pct": 23.52,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.163314,
+                    51.321224
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:43.802423",
+                "rolling_damage_pct": 21.3,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.163346,
+                    51.321216
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:44.802423",
+                "rolling_damage_pct": 20.47,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.163366,
+                    51.321213
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:45.802423",
+                "rolling_damage_pct": 21.8,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.163375,
+                    51.321248
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:46.802423",
+                "rolling_damage_pct": 19.58,
+                "alert": true
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.163412,
+                    51.321252
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-04-10T11:08:47.802423",
+                "rolling_damage_pct": 15.58,
+                "alert": true
+            }
+        }
+    ]
+}
