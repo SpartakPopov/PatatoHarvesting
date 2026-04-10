@@ -6,8 +6,9 @@
  *
  * Data source
  * ───────────
- * 'mock'    — JavaScript simulation engine (no backend required)
- * 'backend' — Python FastAPI WebSocket (cd backend && python run.py)
+ * 'mock'     — Procedural JS simulation engine (no backend required)
+ * 'pipeline' — Playback of pre-generated pipeline/ data files
+ * 'backend'  — Python FastAPI WebSocket (cd backend && python run.py)
  *
  * To switch: change the DATA_SOURCE constant below, or set the
  * VITE_DATA_SOURCE environment variable in frontend/.env.
@@ -20,7 +21,7 @@ import { useHarvestData } from './hooks/useHarvestData'
 import { swathQuad, yieldColor } from './utils/geo'
 import { SIM_CFG } from './config/simulation'
 
-const DATA_SOURCE = import.meta.env.VITE_DATA_SOURCE ?? 'mock'
+const DATA_SOURCE = import.meta.env.VITE_DATA_SOURCE ?? 'pipeline'
 
 const EMPTY_STATS = { area: 0, rows: 0, qualitySum: 0, ticks: 0 }
 

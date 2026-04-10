@@ -6,14 +6,17 @@
  *
  * Tractor images
  * ──────────────
- * Two top-down PNGs are preloaded at module level (no flickering mid-session):
- *   tractor-right.png  — used when heading is roughly East  (315° – 135°)
- *   tractor-left.png   — used when heading is roughly West  (135° – 315°)
+ * Four top-down PNGs are preloaded at module level (no flickering mid-session):
+ *   tractor-right.png — base image, facing East  (heading ~90°)
+ *   tractor-left.png  — facing West  (heading ~270°)
+ *   tractor-up.png    — facing North (heading ~0°/360°)
+ *   tractor-down.png  — facing South (heading ~180°)
  *
- * A small canvas rotation equal to the heading drift (±1.5°) is applied on
- * top of the base image so the tractor visually steers with the path.
+ * The image closest to the current heading is selected, then a small canvas
+ * rotation is applied for the angular difference, so the tractor visually
+ * steers with the path in any direction.
  *
- * Display size: 80 × 38 px  (maintains the 721:346 source aspect ratio).
+ * Display size: adapts to each image's source aspect ratio.
  * Centred on the GPS coordinate so it sits squarely on the trail.
  */
 
@@ -22,35 +25,69 @@ import { useMap } from 'react-leaflet'
 
 import tractorRightSrc from '../../assets/tractor-right.png'
 import tractorLeftSrc  from '../../assets/tractor-left.png'
+import tractorUpSrc    from '../../assets/tractor-up.png'
+import tractorDownSrc  from '../../assets/tractor-down.png'
 
 // ── Preload images at module level (once per app lifetime) ────────────────────
 const IMG_RIGHT = new Image()
 const IMG_LEFT  = new Image()
+const IMG_UP    = new Image()
+const IMG_DOWN  = new Image()
 IMG_RIGHT.src = tractorRightSrc
 IMG_LEFT.src  = tractorLeftSrc
+IMG_UP.src    = tractorUpSrc
+IMG_DOWN.src  = tractorDownSrc
 
-// Display dimensions — keep 721:346 ≈ 2.08:1 aspect ratio
-const TRACTOR_W = 80
-const TRACTOR_H = Math.round(TRACTOR_W / (721 / 346)) // ≈ 38 px
+// Display dimensions for horizontal images (right / left)
+// Maintain ~2.08:1 aspect ratio from 721 × 346 source
+const H_W = 80
+const H_H = Math.round(H_W / (721 / 346)) // ≈ 38 px
+
+// Display dimensions for vertical images (up / down)
+// Maintain ~1:2.08 aspect ratio (inverted)
+const V_W = 38
+const V_H = 80
+
+// ── Direction quadrants ───────────────────────────────────────────────────────
+//
+// heading 0°/360° = North, 90° = East, 180° = South, 270° = West
+//
+// We pick the image whose cardinal direction is closest to the heading,
+// then apply a small canvas rotation for the remaining angular difference.
+//
+//   North (Up)   :  315° – 45°     → base angle  0°
+//   East  (Right):   45° – 135°    → base angle 90°
+//   South (Down) :  135° – 225°    → base angle 180°
+//   West  (Left) :  225° – 315°    → base angle 270°
+
+function selectTractor(headingDeg) {
+  const h = ((headingDeg % 360) + 360) % 360
+
+  if (h >= 315 || h < 45)   return { img: IMG_UP,    w: V_W, h: V_H, base: 0   }
+  if (h >= 45  && h < 135)  return { img: IMG_RIGHT, w: H_W, h: H_H, base: 90  }
+  if (h >= 135 && h < 225)  return { img: IMG_DOWN,  w: V_W, h: V_H, base: 180 }
+  /*                  */     return { img: IMG_LEFT,  w: H_W, h: H_H, base: 270 }
+}
 
 // ── Tractor draw helper ───────────────────────────────────────────────────────
 
 function drawTractor(ctx, x, y, headingDeg) {
-  // Pick image: right-facing for East (0°–180°), left-facing for West (180°–360°)
-  const goingEast = headingDeg >= 0 && headingDeg < 180
-  const img       = goingEast ? IMG_RIGHT : IMG_LEFT
+  const { img, w, h, base } = selectTractor(headingDeg)
 
   // Skip if the image hasn't loaded yet (first few ms of app)
   if (!img.complete || img.naturalWidth === 0) return
 
-  // Drift offset from the base cardinal heading (East = 90°, West = 270°)
-  const baseHeading = goingEast ? 90 : 270
-  const driftRad    = (headingDeg - baseHeading) * Math.PI / 180
+  // Small drift rotation: difference between actual heading and base cardinal
+  let drift = headingDeg - base
+  // Normalise to [-180, 180]
+  if (drift > 180)  drift -= 360
+  if (drift < -180) drift += 360
+  const driftRad = drift * Math.PI / 180
 
   ctx.save()
   ctx.translate(x, y)
-  ctx.rotate(driftRad)                              // apply only the ±1.5° drift
-  ctx.drawImage(img, -TRACTOR_W / 2, -TRACTOR_H / 2, TRACTOR_W, TRACTOR_H)
+  ctx.rotate(driftRad) // apply only the small drift (≤ ±45°)
+  ctx.drawImage(img, -w / 2, -h / 2, w, h)
   ctx.restore()
 }
 
@@ -101,6 +138,8 @@ export default function CanvasLayer({ segments, tractor }) {
     // Re-draw when images finish loading (in case they weren't ready on first tick)
     IMG_RIGHT.onload = redraw
     IMG_LEFT.onload  = redraw
+    IMG_UP.onload    = redraw
+    IMG_DOWN.onload  = redraw
 
     redrawRef.current = redraw
     map.on('move zoom viewreset resize', redraw)

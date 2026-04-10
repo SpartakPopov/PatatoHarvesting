@@ -5,18 +5,20 @@
  * interface to the rest of the app.
  *
  * The data source is selected by the DATA_SOURCE constant in App.jsx:
- *   'mock'    → services/mockEngine.js  (no backend required)
- *   'backend' → services/api.js         (Python FastAPI WebSocket)
+ *   'mock'     → services/mockEngine.js          (procedural JS simulation)
+ *   'pipeline' → services/pipelineMockEngine.js   (playback of pipeline/ files)
+ *   'backend'  → services/api.js                  (Python FastAPI WebSocket)
  *
  * Switching sources does not change any other file.
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { createMockEngine }         from '../services/mockEngine'
-import { createBackendConnection }  from '../services/api'
+import { createMockEngine } from '../services/mockEngine'
+import { createPipelineMockEngine } from '../services/pipelineMockEngine'
+import { createBackendConnection } from '../services/api'
 
 export function useHarvestData({ dataSource, onPacket }) {
-  const [status,    setStatus]    = useState('idle') // 'idle' | 'running' | 'stopped'
+  const [status, setStatus] = useState('idle') // 'idle' | 'running' | 'stopped'
   const connectionRef = useRef(null)
 
   // Keep onPacket in a ref so the engine closure always calls the latest version
@@ -27,12 +29,15 @@ export function useHarvestData({ dataSource, onPacket }) {
   const start = useCallback(() => {
     const handler = (pkt) => onPacketRef.current(pkt)
 
-    connectionRef.current =
-      dataSource === 'mock'
-        ? createMockEngine(handler)
-        : createBackendConnection(handler)
+    if (dataSource === 'mock') {
+      connectionRef.current = createMockEngine(handler)
+    } else if (dataSource === 'pipeline') {
+      connectionRef.current = createPipelineMockEngine(handler)
+    } else {
+      connectionRef.current = createBackendConnection(handler)
+    }
 
-    connectionRef.current.start?.() // mock engine needs .start(); backend auto-starts
+    connectionRef.current.start?.() // mock engines need .start(); backend auto-starts
     setStatus('running')
   }, [dataSource])
 

@@ -13,7 +13,7 @@ def process_stream(input_file):
     
     for frame in raw_data:
         # Count objects by class per frame
-        counts = {"potato_good": 0, "potato_damaged": 0, "clod": 0, "stone": 0}
+        counts = {"potato_good": 0, "potato_damaged": 0, "clod": 0, "stone": 0, "stick": 0}
         for det in frame["detections"]:
             counts[det["class"]] += 1
             
@@ -29,6 +29,7 @@ def process_stream(input_file):
             "potato_damaged": counts["potato_damaged"],
             "clod": counts["clod"],
             "stone": counts["stone"],
+            "stick": counts["stick"],
             "damage_ratio": damage_ratio
         }
         processed_records.append(record)

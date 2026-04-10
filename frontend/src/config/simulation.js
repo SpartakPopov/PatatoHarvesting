@@ -10,8 +10,8 @@
  */
 export const SIM_CFG = {
   // ── Field origin (SW corner) ──────────────────────────────────
-  startLat:   43.6210,    // WGS-84 latitude  (Idaho potato belt)
-  startLon:  -116.2050,   // WGS-84 longitude
+  startLat:   41.915243,
+  startLon:    25.692696,
 
   // ── Field geometry ────────────────────────────────────────────
   rowLength:  220,         // metres along each harvest pass
