@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Precision Harvest Dashboard — Field A-7</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg:      #0d0f18;
+    --panel:   #161926;
+    --card:    #1d2235;
+    --border:  #252a3d;
+    --text:    #e2e8f0;
+    --muted:   #6b7a99;
+    --green:   #22c55e;
+    --yellow:  #eab308;
+    --orange:  #f97316;
+    --red:     #ef4444;
+    --accent:  #38bdf8;
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── SIDEBAR ─────────────────────────────────────── */
+  #sidebar {
+    width: 300px;
+    min-width: 300px;
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .sb-header {
+    padding: 15px 18px 13px;
+    background: linear-gradient(135deg, #0f1726 0%, #161d30 100%);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .sb-header h1 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+
+  .sb-header .sub {
+    font-size: 10.5px;
+    color: var(--muted);
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    flex-shrink: 0;
+    animation: blink 1.6s ease-in-out infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
+
+  /* ── GAUGE SECTION ───────────────────────────────── */
+  .gauge-section {
+    padding: 20px 18px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    align-self: flex-start;
+  }
+
+  #gauge-wrap { position: relative; width: 200px; height: 115px; }
+
+  #gauge-wrap svg { display: block; }
+
+  .gauge-center {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .gauge-big {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--text);
+    letter-spacing: -1px;
+  }
+
+  .gauge-unit {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  /* ── DEBRIS BARS ─────────────────────────────────── */
+  .bars-section {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 9px;
+  }
+  .bar-row:last-child { margin-bottom: 0; }
+
+  .bar-name {
+    font-size: 11.5px;
+    width: 40px;
+    color: var(--text);
+    flex-shrink: 0;
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 7px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.45s cubic-bezier(.4,0,.2,1);
+    min-width: 0;
+  }
+
+  .bar-num {
+    font-size: 11px;
+    width: 38px;
+    text-align: right;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── STAT CARDS ──────────────────────────────────── */
+  .stats-section {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 12px;
+  }
+
+  .stat-card .lbl {
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: var(--muted);
+  }
+
+  .stat-card .val {
+    font-size: 21px;
+    font-weight: 700;
+    color: var(--text);
+    margin-top: 3px;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-card .unit2 {
+    font-size: 9.5px;
+    color: var(--muted);
+  }
+
+  /* ── GPS ─────────────────────────────────────────── */
+  .gps-section {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .gps-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 7px;
+  }
+  .gps-row:last-child { margin-bottom: 0; }
+
+  .gps-key {
+    font-size: 10.5px;
+    color: var(--muted);
+  }
+
+  .gps-val {
+    font-family: 'Courier New', monospace;
+    font-size: 11.5px;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── HISTORY SPARKLINE ───────────────────────────── */
+  .spark-section {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  #sparkline {
+    width: 100%;
+    height: 48px;
+    display: block;
+  }
+
+  /* ── CONTROLS ────────────────────────────────────── */
+  .controls-section {
+    padding: 14px 18px;
+    margin-top: auto;
+    flex-shrink: 0;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 9px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: background .18s, border-color .18s;
+    margin-bottom: 7px;
+    text-align: left;
+  }
+  .btn:last-child { margin-bottom: 0; }
+  .btn:hover { background: #232840; border-color: var(--accent); }
+
+  .btn.danger { color: var(--red); border-color: #3d1a1a; }
+  .btn.danger:hover { background: #2a1515; border-color: var(--red); }
+
+  /* ── MAP AREA ────────────────────────────────────── */
+  #map-wrapper {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #map {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Leaflet dark attribution */
+  .leaflet-control-attribution {
+    background: rgba(13,15,24,.85) !important;
+    color: #6b7a99 !important;
+    font-size: 9px !important;
+  }
+
+  .leaflet-control-attribution a { color: #38bdf8 !important; }
+
+  /* ── LEGEND ──────────────────────────────────────── */
+  #legend {
+    position: absolute;
+    bottom: 30px;
+    right: 10px;
+    background: rgba(13,15,24,.92);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 11px 14px;
+    z-index: 1000;
+    min-width: 145px;
+    backdrop-filter: blur(4px);
+  }
+
+  #legend h4 {
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .leg-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+    font-size: 11px;
+    color: var(--text);
+  }
+  .leg-row:last-child { margin-bottom: 0; }
+
+  .leg-sw {
+    width: 26px;
+    height: 9px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ── INFO BANNER (end-of-field) ──────────────────── */
+  #banner {
+    display: none;
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(13,15,24,.95);
+    border: 1px solid var(--green);
+    border-radius: 8px;
+    padding: 9px 18px;
+    z-index: 1000;
+    font-size: 13px;
+    color: var(--green);
+    letter-spacing: .5px;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ SIDEBAR ═══════════════════════════════════════════ -->
+<div id="sidebar">
+
+  <div class="sb-header">
+    <h1>Harvest Dashboard</h1>
+    <div class="sub">
+      <span class="dot" id="status-dot"></span>
+      <span id="status-text">Simulation Active — Field A-7</span>
+    </div>
+  </div>
+
+  <!-- YIELD GAUGE -->
+  <div class="gauge-section">
+    <div class="section-label">Current Yield Quality</div>
+    <div id="gauge-wrap">
+      <svg width="200" height="115" viewBox="0 0 200 115">
+        <defs>
+          <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#ef4444"/>
+            <stop offset="35%"  stop-color="#f97316"/>
+            <stop offset="60%"  stop-color="#eab308"/>
+            <stop offset="100%" stop-color="#22c55e"/>
+          </linearGradient>
+        </defs>
+        <!-- Background track -->
+        <path d="M 22 100 A 78 78 0 0 1 178 100"
+              fill="none" stroke="rgba(255,255,255,0.07)"
+              stroke-width="14" stroke-linecap="round"/>
+        <!-- Value arc -->
+        <path id="gauge-arc"
+              d="M 22 100 A 78 78 0 0 1 178 100"
+              fill="none" stroke="url(#arcGrad)"
+              stroke-width="14" stroke-linecap="round"
+              stroke-dasharray="245" stroke-dashoffset="0"/>
+        <!-- Needle -->
+        <line id="needle" x1="100" y1="100" x2="100" y2="28"
+              stroke="white" stroke-width="2.5"
+              stroke-linecap="round" opacity="0.85"/>
+        <circle cx="100" cy="100" r="5" fill="white" opacity="0.85"/>
+        <!-- Scale ticks -->
+        <text x="18"  y="112" font-size="9" fill="#6b7a99" text-anchor="middle">0</text>
+        <text x="182" y="112" font-size="9" fill="#6b7a99" text-anchor="middle">100</text>
+        <text x="100" y="20"  font-size="9" fill="#6b7a99" text-anchor="middle">50</text>
+      </svg>
+      <div class="gauge-center">
+        <div class="gauge-big"><span id="g-pct">--</span></div>
+        <div class="gauge-unit">% potato yield</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEBRIS BARS -->
+  <div class="bars-section">
+    <div class="section-label">Debris Breakdown</div>
+    <div class="bar-row">
+      <div class="bar-name">Rocks</div>
+      <div class="bar-track">
+        <div class="bar-fill" id="bar-rocks" style="width:0%;background:var(--red)"></div>
+      </div>
+      <div class="bar-num" id="num-rocks">0.0%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-name">Sticks</div>
+      <div class="bar-track">
+        <div class="bar-fill" id="bar-sticks" style="width:0%;background:var(--orange)"></div>
+      </div>
+      <div class="bar-num" id="num-sticks">0.0%</div>
+    </div>
+  </div>
+
+  <!-- STATS GRID -->
+  <div class="stats-section">
+    <div class="section-label">Session Statistics</div>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="lbl">Area Covered</div>
+        <div class="val" id="s-area">0</div>
+        <div class="unit2">m²</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Rows Completed</div>
+        <div class="val"><span id="s-rows">0</span></div>
+        <div class="unit2">of 40</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Avg Quality</div>
+        <div class="val" id="s-avg">--</div>
+        <div class="unit2">%</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Swath Segs</div>
+        <div class="val" id="s-segs">0</div>
+        <div class="unit2">total</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GPS READOUT -->
+  <div class="gps-section">
+    <div class="section-label">GPS &amp; Navigation</div>
+    <div class="gps-row">
+      <span class="gps-key">Latitude</span>
+      <span class="gps-val" id="g-lat">--</span>
+    </div>
+    <div class="gps-row">
+      <span class="gps-key">Longitude</span>
+      <span class="gps-val" id="g-lon">--</span>
+    </div>
+    <div class="gps-row">
+      <span class="gps-key">Heading</span>
+      <span class="gps-val" id="g-hdg">--°</span>
+    </div>
+    <div class="gps-row">
+      <span class="gps-key">Ground Speed</span>
+      <span class="gps-val" id="g-spd">-- km/h</span>
+    </div>
+  </div>
+
+  <!-- SPARKLINE HISTORY -->
+  <div class="spark-section">
+    <div class="section-label">Yield History (last 60 readings)</div>
+    <svg id="sparkline" viewBox="0 0 264 48" preserveAspectRatio="none">
+      <polyline id="spark-line" points="" fill="none" stroke="var(--green)"
+                stroke-width="1.5" stroke-linejoin="round"/>
+      <line x1="0" y1="9.6" x2="264" y2="9.6"
+            stroke="rgba(34,197,94,.2)" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="0" y1="38.4" x2="264" y2="38.4"
+            stroke="rgba(239,68,68,.2)" stroke-width="1" stroke-dasharray="3,3"/>
+    </svg>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls-section">
+    <button class="btn" id="btn-follow">&#128205; Following Tractor</button>
+    <button class="btn danger" id="btn-reset">&#8635; Reset Simulation</button>
+  </div>
+
+</div>
+
+<!-- ══ MAP ═══════════════════════════════════════════════ -->
+<div id="map-wrapper">
+  <div id="map"></div>
+
+  <div id="legend">
+    <h4>Yield Quality</h4>
+    <div class="leg-row"><div class="leg-sw" style="background:#22c55e"></div>&gt; 90% Potatoes</div>
+    <div class="leg-row"><div class="leg-sw" style="background:#eab308"></div>Mixed (60 – 90%)</div>
+    <div class="leg-row"><div class="leg-sw" style="background:#ef4444"></div>&gt; 40% Debris</div>
+  </div>
+
+  <div id="banner">&#9989; Harvest complete — Field A-7 finished</div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// ═══════════════════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════════════════
+const CFG = {
+  startLat:     43.6210,   // Idaho potato country
+  startLon:    -116.2050,
+  rowLength:    220,        // metres per row
+  swathWidth:     4,        // metres (4 m swath)
+  rowSpacing:     4,        // metres between rows
+  maxRows:       40,
+  speedMPS:       3.2,      // metres per 500 ms tick  (≈23 km/h)
+  steerNoise:     1.5,      // max heading drift ± degrees
+  tickMs:       500,
+  initZoom:      18,
+};
+
+// ═══════════════════════════════════════════════════════════
+// MAP
+// ═══════════════════════════════════════════════════════════
+const map = L.map('map', {
+  center: [CFG.startLat, CFG.startLon],
+  zoom:   CFG.initZoom,
+  zoomControl: true,
+});
+
+L.tileLayer(
+  'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+  { attribution: 'Imagery © Esri', maxZoom: 20 }
+).addTo(map);
+
+// ═══════════════════════════════════════════════════════════
+// CANVAS TRAIL OVERLAY
+// Appended directly inside the Leaflet map container.
+// We redraw every segment (in lat/lon → containerPoint) on
+// every map move/zoom so the trail is always pixel-perfect.
+// ═══════════════════════════════════════════════════════════
+const mapEl   = map.getContainer();
+const canvas  = document.createElement('canvas');
+canvas.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:401;';
+mapEl.appendChild(canvas);
+const ctx = canvas.getContext('2d');
+
+let segments = []; // { quad:[[lat,lon]×4], color:string }[]
+
+function resizeCanvas() {
+  canvas.width  = mapEl.clientWidth;
+  canvas.height = mapEl.clientHeight;
+}
+
+function redrawTrail() {
+  resizeCanvas();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  for (const seg of segments) {
+    const pts = seg.quad.map(([lat, lon]) => map.latLngToContainerPoint([lat, lon]));
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y);
+    for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+    ctx.closePath();
+    ctx.fillStyle = seg.color;
+    ctx.fill();
+  }
+
+  // Draw tractor icon last so it sits on top
+  if (sim && sim.lat != null) drawTractor();
+}
+
+function drawTractor() {
+  const p = map.latLngToContainerPoint([sim.lat, sim.lon]);
+  ctx.save();
+  ctx.translate(p.x, p.y);
+  // Leaflet heading: 0°=N, 90°=E → canvas rotation (0°=right)
+  ctx.rotate((sim.heading - 90) * Math.PI / 180);
+
+  // Body
+  ctx.fillStyle = '#f59e0b';
+  ctx.beginPath();
+  ctx.roundRect(-13, -7, 26, 14, 3);
+  ctx.fill();
+
+  // Cab
+  ctx.fillStyle = '#d97706';
+  ctx.fillRect(-3, -12, 10, 7);
+
+  // Headlights
+  ctx.fillStyle = '#fef3c7';
+  ctx.fillRect(12, -5, 3, 4);
+  ctx.fillRect(12, 1, 3, 4);
+
+  // Direction arrow
+  ctx.fillStyle = 'rgba(255,255,255,0.9)';
+  ctx.beginPath();
+  ctx.moveTo(17, 0);
+  ctx.lineTo(12, -4);
+  ctx.lineTo(12, 4);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.restore();
+}
+
+map.on('move zoom viewreset resize', redrawTrail);
+window.addEventListener('resize', () => { resizeCanvas(); redrawTrail(); });
+resizeCanvas();
+
+// ═══════════════════════════════════════════════════════════
+// COORDINATE HELPERS
+// ═══════════════════════════════════════════════════════════
+function latDegPerMetre()           { return 1 / 111_000; }
+function lonDegPerMetre(lat)        { return 1 / (111_000 * Math.cos(lat * Math.PI / 180)); }
+
+/** Move (lat,lon) by distMetres in direction headingDeg (0=N,90=E) */
+function offset(lat, lon, headingDeg, distMetres) {
+  const r   = headingDeg * Math.PI / 180;
+  const dLat = Math.cos(r) * latDegPerMetre() * distMetres;
+  const dLon = Math.sin(r) * lonDegPerMetre(lat) * distMetres;
+  return [lat + dLat, lon + dLon];
+}
+
+/**
+ * Given two points A→B and a swath width in metres,
+ * return the 4-corner quadrilateral [AL, AR, BR, BL].
+ */
+function swathQuad(latA, lonA, latB, lonB, widthM) {
+  const dLat = latB - latA;
+  const dLon = lonB - lonA;
+  const len  = Math.hypot(dLat, dLon);
+  if (len < 1e-12) return null;
+
+  // Perpendicular unit vector (in degree-space; approximate for small distances)
+  const pLat = -dLon / len;
+  const pLon =  dLat / len;
+
+  const half   = widthM / 2;
+  const midLat = (latA + latB) / 2;
+  const hLat   = pLat * latDegPerMetre() * half;
+  const hLon   = pLon * lonDegPerMetre(midLat) * half;
+
+  return [
+    [latA - hLat, lonA - hLon], // AL
+    [latA + hLat, lonA + hLon], // AR
+    [latB + hLat, lonB + hLon], // BR
+    [latB - hLat, lonB - hLon], // BL
+  ];
+}
+
+// ═══════════════════════════════════════════════════════════
+// COLOUR MAPPING
+// potato_pct 100 → dark green | 60 → yellow | <60 → red
+// ═══════════════════════════════════════════════════════════
+function lerpColor(a, b, t) {
+  t = Math.max(0, Math.min(1, t));
+  const h = s => [parseInt(s.slice(1,3),16), parseInt(s.slice(3,5),16), parseInt(s.slice(5,7),16)];
+  const [ar,ag,ab] = h(a), [br,bg,bb] = h(b);
+  return `rgba(${Math.round(ar+(br-ar)*t)},${Math.round(ag+(bg-ag)*t)},${Math.round(ab+(bb-ab)*t)},0.82)`;
+}
+
+function yieldColor(pct) {
+  if (pct >= 90) return lerpColor('#166534', '#22c55e', (pct - 90) / 10); // dark → bright green
+  if (pct >= 60) return lerpColor('#ca8a04', '#22c55e', (pct - 60) / 30); // yellow → green
+  return lerpColor('#b91c1c', '#ca8a04', pct / 60);                        // red → yellow
+}
+
+// ═══════════════════════════════════════════════════════════
+// SIMULATION ENGINE
+// ═══════════════════════════════════════════════════════════
+let sim         = null;
+let simTimer    = null;
+let sparkData   = [];
+let totalQSum   = 0;
+let totalTicks  = 0;
+let totalArea   = 0;
+
+function makeSim() {
+  return {
+    lat:          CFG.startLat,
+    lon:          CFG.startLon,
+    prevLat:      CFG.startLat,
+    prevLon:      CFG.startLon,
+    heading:      90,          // start heading East
+    rowDir:       1,           // 1=East, -1=West
+    rowIdx:       0,
+    rowProgress:  0,           // metres into current row
+    driftAcc:     0,           // accumulated heading drift
+    done:         false,
+    cvData:       null,
+  };
+}
+
+/** Field quality: zonal variation + per-tick noise, clamped 20–99 */
+function genCV(lat, lon, rowIdx) {
+  const fx = (lon - CFG.startLon) * 300;
+  const fy = (lat - CFG.startLat) * 300;
+  const zonal =
+      Math.sin(fx * 0.18 + 1.2)  * 12
+    + Math.cos(fy * 0.22 - 0.7)  * 9
+    + Math.sin((fx + fy) * 0.09) * 6
+    + (rowIdx % 9 === 4 ? -22 : 0)   // rocky strip
+    + (rowIdx % 13 === 7 ?  15 : 0);  // fertile strip
+
+  const base  = 80 + zonal;
+  const noise = (Math.random() - 0.5) * 14;
+  const pots  = Math.max(20, Math.min(99, base + noise));
+
+  const rem   = 100 - pots;
+  const rf    = 0.35 + Math.random() * 0.45;
+  return {
+    potatoes: Math.round(pots * 10) / 10,
+    rocks:    Math.round(rem * rf   * 10) / 10,
+    sticks:   Math.round(rem * (1 - rf) * 10) / 10,
+    lat, lon,
+    heading:  sim.heading,
+  };
+}
+
+function tick() {
+  if (!sim || sim.done) return;
+
+  // ── Steering noise: bounded random walk ──
+  const nudge = (Math.random() - 0.5) * 1.2;
+  sim.driftAcc = Math.max(-CFG.steerNoise, Math.min(CFG.steerNoise, sim.driftAcc + nudge));
+  const baseHdg = sim.rowDir === 1 ? 90 : 270;
+  sim.heading   = baseHdg + sim.driftAcc;
+
+  // ── Move ──
+  sim.prevLat = sim.lat;
+  sim.prevLon = sim.lon;
+  [sim.lat, sim.lon] = offset(sim.lat, sim.lon, sim.heading, CFG.speedMPS);
+  sim.rowProgress += CFG.speedMPS;
+
+  // ── CV data ──
+  const cv = genCV(sim.lat, sim.lon, sim.rowIdx);
+  sim.cvData = cv;
+
+  // ── Swath segment ──
+  const quad = swathQuad(sim.prevLat, sim.prevLon, sim.lat, sim.lon, CFG.swathWidth);
+  if (quad) {
+    segments.push({ quad, color: yieldColor(cv.potatoes) });
+    totalArea  += CFG.speedMPS * CFG.swathWidth;
+    totalQSum  += cv.potatoes;
+    totalTicks += 1;
+  }
+
+  // ── Sparkline history ──
+  sparkData.push(cv.potatoes);
+  if (sparkData.length > 60) sparkData.shift();
+
+  // ── Row end check ──
+  if (sim.rowProgress >= CFG.rowLength) {
+    sim.rowIdx++;
+    sim.rowProgress = 0;
+    sim.driftAcc    = 0;
+
+    if (sim.rowIdx >= CFG.maxRows) {
+      sim.done = true;
+      document.getElementById('status-dot').style.background = '#f59e0b';
+      document.getElementById('status-text').textContent = 'Harvest complete — Field A-7';
+      document.getElementById('banner').style.display = 'block';
+      clearInterval(simTimer);
+      updateUI();
+      redrawTrail();
+      return;
+    }
+
+    // Step to next row (North by rowSpacing)
+    [sim.lat, sim.lon]     = offset(sim.lat, sim.lon, 0, CFG.rowSpacing);
+    sim.prevLat = sim.lat;
+    sim.prevLon = sim.lon;
+    sim.rowDir  = -sim.rowDir;
+  }
+
+  updateUI();
+  redrawTrail();
+
+  if (autoFollow) map.panTo([sim.lat, sim.lon], { animate: false });
+}
+
+// ═══════════════════════════════════════════════════════════
+// UI UPDATE
+// ═══════════════════════════════════════════════════════════
+let autoFollow = true;
+
+function updateGauge(pct) {
+  // Arc: semicircle path length ≈ π × 78 ≈ 245
+  const arcLen = 245;
+  document.getElementById('gauge-arc').setAttribute(
+    'stroke-dashoffset', (arcLen * (1 - pct / 100)).toFixed(1));
+
+  // Needle: angle from East (standard math) → π*(1−pct/100)
+  // At pct=0: angle=π → left tip (22,100); pct=100: angle=0 → right tip (178,100)
+  const angle = Math.PI * (1 - pct / 100);
+  const nx = (100 + Math.cos(angle) * 62).toFixed(1);
+  const ny = (100 - Math.sin(angle) * 62).toFixed(1);  // SVG y is inverted
+  document.getElementById('needle').setAttribute('x2', nx);
+  document.getElementById('needle').setAttribute('y2', ny);
+}
+
+function updateSparkline(data) {
+  if (data.length < 2) return;
+  const W = 264, H = 48, pad = 3;
+  const pts = data.map((v, i) => {
+    const x = pad + (i / (data.length - 1)) * (W - pad * 2);
+    const y = H - pad - ((v - 0) / 100) * (H - pad * 2);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+  document.getElementById('spark-line').setAttribute('points', pts);
+}
+
+function updateUI() {
+  const cv = sim.cvData;
+  if (!cv) return;
+
+  document.getElementById('g-pct').textContent     = cv.potatoes.toFixed(1);
+  document.getElementById('bar-rocks').style.width = cv.rocks + '%';
+  document.getElementById('num-rocks').textContent  = cv.rocks.toFixed(1) + '%';
+  document.getElementById('bar-sticks').style.width = cv.sticks + '%';
+  document.getElementById('num-sticks').textContent = cv.sticks.toFixed(1) + '%';
+
+  document.getElementById('s-area').textContent = Math.round(totalArea).toLocaleString();
+  document.getElementById('s-rows').textContent = sim.rowIdx;
+  document.getElementById('s-avg').textContent  =
+    totalTicks > 0 ? (totalQSum / totalTicks).toFixed(1) : '--';
+  document.getElementById('s-segs').textContent = segments.length;
+
+  document.getElementById('g-lat').textContent = sim.lat.toFixed(6);
+  document.getElementById('g-lon').textContent = sim.lon.toFixed(6);
+  document.getElementById('g-hdg').textContent = sim.heading.toFixed(1) + '°';
+  // speedMPS × 2 because ticks are 500 ms, × 3.6 for km/h
+  document.getElementById('g-spd').textContent = (CFG.speedMPS * 2 * 3.6).toFixed(1) + ' km/h';
+
+  updateGauge(cv.potatoes);
+  updateSparkline(sparkData);
+}
+
+// ═══════════════════════════════════════════════════════════
+// CONTROLS
+// ═══════════════════════════════════════════════════════════
+document.getElementById('btn-follow').addEventListener('click', () => {
+  autoFollow = !autoFollow;
+  document.getElementById('btn-follow').textContent =
+    autoFollow ? '📍 Following Tractor' : '🔓 Free Navigation';
+  if (autoFollow && sim) map.panTo([sim.lat, sim.lon]);
+});
+
+document.getElementById('btn-reset').addEventListener('click', () => {
+  clearInterval(simTimer);
+  segments      = [];
+  sparkData     = [];
+  totalQSum     = 0;
+  totalTicks    = 0;
+  totalArea     = 0;
+
+  sim = makeSim();
+  map.setView([CFG.startLat, CFG.startLon], CFG.initZoom);
+  redrawTrail();
+
+  document.getElementById('status-dot').style.background = '';
+  document.getElementById('status-text').textContent = 'Simulation Active — Field A-7';
+  document.getElementById('banner').style.display = 'none';
+
+  // Reset gauge/bars to initial state
+  document.getElementById('g-pct').textContent  = '--';
+  document.getElementById('s-avg').textContent  = '--';
+  document.getElementById('s-area').textContent = '0';
+  document.getElementById('s-rows').textContent = '0';
+  document.getElementById('s-segs').textContent = '0';
+  document.getElementById('spark-line').setAttribute('points', '');
+
+  simTimer = setInterval(tick, CFG.tickMs);
+});
+
+// ═══════════════════════════════════════════════════════════
+// START
+// ═══════════════════════════════════════════════════════════
+sim      = makeSim();
+simTimer = setInterval(tick, CFG.tickMs);
+</script>
+</body>
+</html>
