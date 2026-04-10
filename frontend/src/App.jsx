@@ -26,12 +26,12 @@ const DATA_SOURCE = import.meta.env.VITE_DATA_SOURCE ?? 'pipeline'
 const EMPTY_STATS = { area: 0, rows: 0, qualitySum: 0, ticks: 0 }
 
 export default function App() {
-  const [segments,     setSegments]     = useState([])
-  const [cvPacket,     setCvPacket]     = useState(null)
+  const [segments, setSegments] = useState([])
+  const [cvPacket, setCvPacket] = useState(null)
   const [sparkHistory, setSparkHistory] = useState([])
-  const [stats,        setStats]        = useState(EMPTY_STATS)
-  const [tractor,      setTractor]      = useState(null)
-  const [sidebarOpen,  setSidebarOpen]  = useState(true)
+  const [stats, setStats] = useState(EMPTY_STATS)
+  const [tractor, setTractor] = useState(null)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
 
   // Tracks the previous GPS position for swath quad computation
   const prevPosRef = useRef(null)
@@ -56,10 +56,10 @@ export default function App() {
       }
 
       setStats((prev) => ({
-        area:       prev.area + SIM_CFG.speedMPS * SIM_CFG.rowSpacing,
-        rows:       pkt.rowIdx,
+        area: prev.area + SIM_CFG.speedMPS * SIM_CFG.rowSpacing,
+        rows: pkt.rowIdx,
         qualitySum: prev.qualitySum + pkt.potatoes,
-        ticks:      prev.ticks + 1,
+        ticks: prev.ticks + 1,
       }))
     }
 
@@ -71,7 +71,7 @@ export default function App() {
 
   const { status, start, stop } = useHarvestData({
     dataSource: DATA_SOURCE,
-    onPacket:   handlePacket,
+    onPacket: handlePacket,
   })
 
   const handleReset = useCallback(() => {
@@ -87,10 +87,10 @@ export default function App() {
   // Colour of the live-yield badge on the floating toggle button
   const pct = cvPacket?.potatoes ?? null
   const badgeColor =
-    pct == null   ? 'var(--muted)'  :
-    pct >= 80     ? 'var(--green)'  :
-    pct >= 60     ? 'var(--yellow)' :
-    pct >= 40     ? 'var(--orange)' : 'var(--red)'
+    pct == null ? 'var(--muted)' :
+      pct >= 80 ? 'var(--green)' :
+        pct >= 60 ? 'var(--yellow)' :
+          pct >= 40 ? 'var(--orange)' : 'var(--red)'
 
   return (
     <div className={`app${sidebarOpen ? ' sidebar-open' : ''}`}>

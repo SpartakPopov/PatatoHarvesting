@@ -47,8 +47,13 @@ export function useHarvestData({ dataSource, onPacket }) {
     setStatus('stopped')
   }, [])
 
+  const skip = useCallback(() => {
+    connectionRef.current?.skip?.()
+    setStatus('stopped')
+  }, [])
+
   // Clean up if the component unmounts while a session is running
   useEffect(() => () => connectionRef.current?.stop(), [])
 
-  return { status, start, stop }
+  return { status, start, stop, skip }
 }

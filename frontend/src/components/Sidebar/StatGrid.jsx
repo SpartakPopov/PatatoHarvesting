@@ -27,11 +27,6 @@ export default function StatGrid({ stats }) {
         unit="m²"
       />
       <StatCard
-        label="Rows Done"
-        value={stats.rows}
-        unit="/ 40"
-      />
-      <StatCard
         label="Avg Quality"
         value={avg}
         unit="%"

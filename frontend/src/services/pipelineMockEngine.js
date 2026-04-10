@@ -120,6 +120,7 @@ function buildPacket(csvRow, modelFrame, prevPos, frameIdx, totalFrames) {
 export function createPipelineMockEngine(onPacket) {
   let timer = null
   let stopped = false
+  let skipFn = null
 
   async function run() {
     // Fetch both data sources in parallel, using a timestamp to bypass Vite caching
@@ -138,6 +139,24 @@ export function createPipelineMockEngine(onPacket) {
 
     let i = 0
     let prevPos = null
+
+    skipFn = () => {
+      if (stopped || !timer) return
+      clearInterval(timer)
+      timer = null
+
+      const safetyLimit = 100_000
+      let iter = 0
+
+      while (i < frameCount && iter < safetyLimit) {
+        iter++
+        const pkt = buildPacket(csvRows[i], modelJson[i], prevPos, i, frameCount)
+        prevPos = { lat: pkt.lat, lon: pkt.lon }
+        onPacket(pkt)
+        i++
+      }
+      stopped = true
+    }
 
     timer = setInterval(() => {
       if (i >= frameCount) {
@@ -159,8 +178,13 @@ export function createPipelineMockEngine(onPacket) {
       run().catch(err => console.error('[pipelineMock] Failed to load data:', err))
     },
     stop() {
-      stopped = true
+      if (!timer) return
       clearInterval(timer)
+      timer = null
+      stopped = true
     },
+    skip() {
+      skipFn?.()
+    }
   }
 }

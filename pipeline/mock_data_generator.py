@@ -27,8 +27,8 @@ from datetime import datetime, timedelta
 # Field boundaries: Tractor bounces back and forth within this box
 FIELD_START_LAT = 41.915243
 FIELD_START_LON = 25.692696
-FIELD_END_LAT   = 41.913027
-FIELD_END_LON   = 25.689716
+FIELD_END_LAT   = 41.912667
+FIELD_END_LON   = 25.690684
 
 ROTATION_DEG  = 15.0     # degrees to tilt the field clockwise from the top
 ROW_SPACING_M = 4        # swath width (metres between rows)

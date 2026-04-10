@@ -21,7 +21,6 @@ export default function GPSReadout({ cvPacket }) {
       <Row label="Latitude"  value={p ? p.lat.toFixed(6)     : '--'} />
       <Row label="Longitude" value={p ? p.lon.toFixed(6)     : '--'} />
       <Row label="Heading"   value={p ? p.heading.toFixed(1) + '°' : '--'} />
-      <Row label="Row"       value={p ? `${p.rowIdx + 1} / 40`     : '--'} />
     </div>
   )
 }

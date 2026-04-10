@@ -34,6 +34,7 @@ export default function Sidebar({
   status,
   onStart,
   onStop,
+  onSkip,
   onReset,
   onClose,
 }) {
@@ -89,17 +90,29 @@ export default function Sidebar({
 
       {/* ── Controls ─────────────────────────────────────────────── */}
       <div className="sb-controls">
-        <button
-          className="btn btn-start"
-          onClick={onStart}
-          disabled={status === 'running'}
-        >
-          ▶ Start
-        </button>
+        <div className="btn-row" style={{ display: 'flex', gap: '7px', marginBottom: '7px' }}>
+          <button
+            className="btn btn-start"
+            onClick={onStart}
+            disabled={status === 'running'}
+            style={{ flex: 1 }}
+          >
+            ▶ Start
+          </button>
+          <button
+            className="btn btn-skip"
+            onClick={onSkip}
+            disabled={status !== 'running'}
+            style={{ flex: 1, color: 'var(--accent)', borderColor: '#1a2a3d' }}
+          >
+            ⏭ Skip
+          </button>
+        </div>
         <button
           className="btn btn-stop"
           onClick={onStop}
           disabled={status !== 'running'}
+          style={{ marginBottom: '7px' }}
         >
           ■ End
         </button>
