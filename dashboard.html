@@ -258,6 +258,12 @@
     flex-shrink: 0;
   }
 
+  .btn-row {
+    display: flex;
+    gap: 7px;
+    margin-bottom: 7px;
+  }
+
   .btn {
     width: 100%;
     padding: 9px 14px;
@@ -276,6 +282,14 @@
 
   .btn.danger { color: var(--red); border-color: #3d1a1a; }
   .btn.danger:hover { background: #2a1515; border-color: var(--red); }
+
+  .btn.skip { color: var(--accent); border-color: #1a2a3d; }
+  .btn.skip:hover { background: #15202e; border-color: var(--accent); }
+  .btn.skip:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    border-color: var(--border);
+  }
 
   /* ── MAP AREA ────────────────────────────────────── */
   #map-wrapper {
@@ -491,7 +505,10 @@
 
   <!-- CONTROLS -->
   <div class="controls-section">
-    <button class="btn" id="btn-follow">&#128205; Following Tractor</button>
+    <div class="btn-row">
+      <button class="btn" id="btn-follow">&#128205; Following Tractor</button>
+      <button class="btn skip" id="btn-skip">&#9193; Skip to End</button>
+    </div>
     <button class="btn danger" id="btn-reset">&#8635; Reset Simulation</button>
   </div>
 
@@ -857,6 +874,82 @@ document.getElementById('btn-follow').addEventListener('click', () => {
   if (autoFollow && sim) map.panTo([sim.lat, sim.lon]);
 });
 
+// ── SKIP TO END ──────────────────────────────────────────
+document.getElementById('btn-skip').addEventListener('click', () => {
+  if (!sim || sim.done) return;
+
+  // Stop the live timer
+  clearInterval(simTimer);
+  simTimer = null;
+
+  // Run every remaining tick using the exact same logic as tick()
+  // This guarantees identical segments, stats, sparkline, and final position.
+  const safetyLimit = 200_000; // prevent infinite loops
+  let iterations = 0;
+
+  while (!sim.done && iterations < safetyLimit) {
+    iterations++;
+
+    // ── Steering noise: bounded random walk ──
+    const nudge = (Math.random() - 0.5) * 1.2;
+    sim.driftAcc = Math.max(-CFG.steerNoise, Math.min(CFG.steerNoise, sim.driftAcc + nudge));
+    const baseHdg = sim.rowDir === 1 ? 90 : 270;
+    sim.heading   = baseHdg + sim.driftAcc;
+
+    // ── Move ──
+    sim.prevLat = sim.lat;
+    sim.prevLon = sim.lon;
+    [sim.lat, sim.lon] = offset(sim.lat, sim.lon, sim.heading, CFG.speedMPS);
+    sim.rowProgress += CFG.speedMPS;
+
+    // ── CV data ──
+    const cv = genCV(sim.lat, sim.lon, sim.rowIdx);
+    sim.cvData = cv;
+
+    // ── Swath segment ──
+    const quad = swathQuad(sim.prevLat, sim.prevLon, sim.lat, sim.lon, CFG.swathWidth);
+    if (quad) {
+      segments.push({ quad, color: yieldColor(cv.potatoes) });
+      totalArea  += CFG.speedMPS * CFG.swathWidth;
+      totalQSum  += cv.potatoes;
+      totalTicks += 1;
+    }
+
+    // ── Sparkline history ──
+    sparkData.push(cv.potatoes);
+    if (sparkData.length > 60) sparkData.shift();
+
+    // ── Row end check ──
+    if (sim.rowProgress >= CFG.rowLength) {
+      sim.rowIdx++;
+      sim.rowProgress = 0;
+      sim.driftAcc    = 0;
+
+      if (sim.rowIdx >= CFG.maxRows) {
+        sim.done = true;
+        document.getElementById('status-dot').style.background = '#f59e0b';
+        document.getElementById('status-text').textContent = 'Harvest complete — Field A-7';
+        document.getElementById('banner').style.display = 'block';
+        break;
+      }
+
+      // Step to next row (North by rowSpacing)
+      [sim.lat, sim.lon] = offset(sim.lat, sim.lon, 0, CFG.rowSpacing);
+      sim.prevLat = sim.lat;
+      sim.prevLon = sim.lon;
+      sim.rowDir  = -sim.rowDir;
+    }
+  }
+
+  // Final UI + map update
+  updateUI();
+  redrawTrail();
+  if (autoFollow) map.panTo([sim.lat, sim.lon], { animate: false });
+
+  // Disable the skip button since we're done
+  document.getElementById('btn-skip').disabled = true;
+});
+
 document.getElementById('btn-reset').addEventListener('click', () => {
   clearInterval(simTimer);
   segments      = [];
@@ -880,6 +973,9 @@ document.getElementById('btn-reset').addEventListener('click', () => {
   document.getElementById('s-rows').textContent = '0';
   document.getElementById('s-segs').textContent = '0';
   document.getElementById('spark-line').setAttribute('points', '');
+
+  // Re-enable skip button
+  document.getElementById('btn-skip').disabled = false;
 
   simTimer = setInterval(tick, CFG.tickMs);
 });
