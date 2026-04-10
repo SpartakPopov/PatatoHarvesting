@@ -1,55 +1,49 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
-import { createMockEngine } from '../simulation/mockEngine'
-
-const WS_URL = 'ws://localhost:8000/ws/harvest'
-
 /**
- * useHarvestData
+ * hooks/useHarvestData.js
  *
- * Manages the data source (mock engine OR Python backend WebSocket).
- * The rest of the app only sees: { status, start, stop }.
- * Switching data sources is a one-line change in App.jsx.
+ * Manages the active data source and exposes a clean { status, start, stop }
+ * interface to the rest of the app.
  *
- * @param {object}   options
- * @param {'mock'|'backend'} options.dataSource
- * @param {function} options.onPacket  — called with each CV data packet
+ * The data source is selected by the DATA_SOURCE constant in App.jsx:
+ *   'mock'    → services/mockEngine.js  (no backend required)
+ *   'backend' → services/api.js         (Python FastAPI WebSocket)
+ *
+ * Switching sources does not change any other file.
  */
+
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { createMockEngine }         from '../services/mockEngine'
+import { createBackendConnection }  from '../services/api'
+
 export function useHarvestData({ dataSource, onPacket }) {
-  const [status, setStatus] = useState('idle') // 'idle' | 'running' | 'stopped'
-  const engineRef = useRef(null)
-  // Keep onPacket ref stable so the engine closure always calls the latest version
+  const [status,    setStatus]    = useState('idle') // 'idle' | 'running' | 'stopped'
+  const connectionRef = useRef(null)
+
+  // Keep onPacket in a ref so the engine closure always calls the latest version
+  // without needing to be re-created when the callback identity changes.
   const onPacketRef = useRef(onPacket)
   useEffect(() => { onPacketRef.current = onPacket }, [onPacket])
 
   const start = useCallback(() => {
-    if (dataSource === 'mock') {
-      const engine = createMockEngine((pkt) => onPacketRef.current(pkt))
-      engineRef.current = engine
-      engine.start()
-    } else {
-      // ── Real Python backend via WebSocket ─────────────────────────
-      const ws = new WebSocket(WS_URL)
-      ws.onopen    = () => ws.send(JSON.stringify({ action: 'start' }))
-      ws.onmessage = (e) => onPacketRef.current(JSON.parse(e.data))
-      ws.onerror   = (e) => console.error('[WS] error', e)
-      engineRef.current = {
-        stop() {
-          try { ws.send(JSON.stringify({ action: 'stop' })) } catch (_) {}
-          ws.close()
-        },
-      }
-    }
+    const handler = (pkt) => onPacketRef.current(pkt)
+
+    connectionRef.current =
+      dataSource === 'mock'
+        ? createMockEngine(handler)
+        : createBackendConnection(handler)
+
+    connectionRef.current.start?.() // mock engine needs .start(); backend auto-starts
     setStatus('running')
   }, [dataSource])
 
   const stop = useCallback(() => {
-    engineRef.current?.stop()
-    engineRef.current = null
+    connectionRef.current?.stop()
+    connectionRef.current = null
     setStatus('stopped')
   }, [])
 
-  // Clean up if the component unmounts while running
-  useEffect(() => () => engineRef.current?.stop(), [])
+  // Clean up if the component unmounts while a session is running
+  useEffect(() => () => connectionRef.current?.stop(), [])
 
   return { status, start, stop }
 }

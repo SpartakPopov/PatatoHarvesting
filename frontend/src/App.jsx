@@ -1,13 +1,26 @@
+/**
+ * App.jsx
+ *
+ * Root component. Owns all shared state and coordinates between
+ * the data layer (useHarvestData) and the UI (Sidebar, MapView).
+ *
+ * Data source
+ * ───────────
+ * 'mock'    — JavaScript simulation engine (no backend required)
+ * 'backend' — Python FastAPI WebSocket (cd backend && python run.py)
+ *
+ * To switch: change the DATA_SOURCE constant below, or set the
+ * VITE_DATA_SOURCE environment variable in frontend/.env.
+ */
+
 import { useState, useCallback, useRef } from 'react'
 import Sidebar from './components/Sidebar'
-import MapView from './components/MapView'
+import MapView from './components/Map'
 import { useHarvestData } from './hooks/useHarvestData'
-import { yieldColor, swathQuad } from './utils/geo'
-import { SIM_CFG } from './simulation/mockEngine'
+import { swathQuad, yieldColor } from './utils/geo'
+import { SIM_CFG } from './config/simulation'
 
-// ─── Toggle this to 'backend' to use the Python FastAPI server ───────────────
-const DATA_SOURCE = 'mock'
-// ─────────────────────────────────────────────────────────────────────────────
+const DATA_SOURCE = import.meta.env.VITE_DATA_SOURCE ?? 'mock'
 
 const EMPTY_STATS = { area: 0, rows: 0, qualitySum: 0, ticks: 0 }
 
@@ -17,8 +30,9 @@ export default function App() {
   const [sparkHistory, setSparkHistory] = useState([])
   const [stats,        setStats]        = useState(EMPTY_STATS)
   const [tractor,      setTractor]      = useState(null)
+  const [sidebarOpen,  setSidebarOpen]  = useState(true)
 
-  // Tracks the previous GPS position so we can compute swath quads
+  // Tracks the previous GPS position for swath quad computation
   const prevPosRef = useRef(null)
 
   const handlePacket = useCallback((pkt) => {
@@ -29,7 +43,7 @@ export default function App() {
       return next.length > 60 ? next.slice(-60) : next
     })
 
-    // Draw a swath segment for every normal forward-movement tick
+    // Draw a swath segment on every normal forward-movement tick
     if (prevPosRef.current && !pkt.rowStep) {
       const quad = swathQuad(
         prevPosRef.current.lat, prevPosRef.current.lon,
@@ -37,8 +51,7 @@ export default function App() {
         SIM_CFG.rowSpacing,
       )
       if (quad) {
-        const color = yieldColor(pkt.potatoes)
-        setSegments((prev) => [...prev, { quad, color }])
+        setSegments((prev) => [...prev, { quad, color: yieldColor(pkt.potatoes) }])
       }
 
       setStats((prev) => ({
@@ -49,14 +62,16 @@ export default function App() {
       }))
     }
 
-    // On a row-step tick just update position without drawing
     prevPosRef.current = { lat: pkt.lat, lon: pkt.lon }
     setTractor({ lat: pkt.lat, lon: pkt.lon, heading: pkt.heading })
 
-    if (pkt.done) stop()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    if (pkt.done) stop() // eslint-disable-line react-hooks/exhaustive-deps
+  }, []) // stable — uses only refs and functional setState
 
-  const { status, start, stop } = useHarvestData({ dataSource: DATA_SOURCE, onPacket: handlePacket })
+  const { status, start, stop } = useHarvestData({
+    dataSource: DATA_SOURCE,
+    onPacket:   handlePacket,
+  })
 
   const handleReset = useCallback(() => {
     stop()
@@ -68,8 +83,22 @@ export default function App() {
     setTractor(null)
   }, [stop])
 
+  // Colour of the live-yield badge on the floating toggle button
+  const pct = cvPacket?.potatoes ?? null
+  const badgeColor =
+    pct == null   ? 'var(--muted)'  :
+    pct >= 80     ? 'var(--green)'  :
+    pct >= 60     ? 'var(--yellow)' :
+    pct >= 40     ? 'var(--orange)' : 'var(--red)'
+
   return (
-    <div className="app">
+    <div className={`app${sidebarOpen ? ' sidebar-open' : ''}`}>
+
+      {/* Scrim — closes the panel when tapped on tablet */}
+      {sidebarOpen && (
+        <div className="sidebar-scrim" onClick={() => setSidebarOpen(false)} />
+      )}
+
       <Sidebar
         cvPacket={cvPacket}
         stats={stats}
@@ -78,11 +107,27 @@ export default function App() {
         onStart={start}
         onStop={stop}
         onReset={handleReset}
+        onClose={() => setSidebarOpen(false)}
       />
 
       <div className="map-wrapper">
         <MapView segments={segments} tractor={tractor} />
 
+        {/* Floating toggle — always visible, shows live yield % */}
+        <button
+          className="panel-toggle"
+          onClick={() => setSidebarOpen((o) => !o)}
+          aria-label="Toggle panel"
+        >
+          <span className="panel-toggle-icon">{sidebarOpen ? '✕' : '☰'}</span>
+          {pct != null && (
+            <span className="panel-toggle-badge" style={{ color: badgeColor }}>
+              {pct.toFixed(0)}%
+            </span>
+          )}
+        </button>
+
+        {/* Yield quality legend */}
         <div className="legend">
           <h4 className="legend-title">Yield Quality</h4>
           <div className="legend-row"><span className="legend-swatch" style={{ background: '#166534' }} />&gt; 90% Potatoes</div>
